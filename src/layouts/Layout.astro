@@ -1,0 +1,100 @@
+---
+import type { Locale } from '../data/content';
+
+interface Props {
+	lang: Locale;
+	title: string;
+	description: string;
+}
+
+const { lang, title, description } = Astro.props;
+---
+
+<!doctype html>
+<html lang={lang === 'pt' ? 'pt-BR' : 'en'}>
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<meta name="description" content={description} />
+		<meta name="generator" content={Astro.generator} />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<title>{title}</title>
+	</head>
+	<body>
+		<slot />
+	</body>
+</html>
+
+<style is:global>
+	:root {
+		--bg: #fafafa;
+		--fg: #151515;
+		--muted: #666;
+		--border: #e4e4e4;
+		--accent: #0b6e4f;
+	}
+
+	@media (prefers-color-scheme: dark) {
+		:root {
+			--bg: #111;
+			--fg: #eee;
+			--muted: #9a9a9a;
+			--border: #2a2a2a;
+			--accent: #5fd4a8;
+		}
+	}
+
+	* {
+		box-sizing: border-box;
+	}
+
+	html {
+		scroll-behavior: smooth;
+	}
+	body {
+		margin: 0;
+		background: var(--bg);
+		color: var(--fg);
+		font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+		line-height: 1.6;
+		-webkit-font-smoothing: antialiased;
+	}
+
+	a {
+		color: var(--accent);
+	}
+
+	.container {
+		max-width: 760px;
+		margin: 0 auto;
+		padding-left: 1.25rem;
+		padding-right: 1.25rem;
+	}
+
+	section {
+		padding: 4rem 0;
+		border-top: 1px solid var(--border);
+	}
+
+	h1,
+	h2,
+	h3 {
+		line-height: 1.2;
+		letter-spacing: -0.01em;
+	}
+
+	h2 {
+		font-size: 1.5rem;
+		margin: 0 0 1.5rem;
+	}
+
+	.muted {
+		color: var(--muted);
+	}
+
+	@media (max-width: 600px) {
+		section {
+			padding: 3rem 0;
+		}
+	}
+</style>

@@ -1,0 +1,275 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { experience, profile, ui, type Locale } from '../data/content';
+
+interface Props {
+	locale: Locale;
+}
+
+const { locale } = Astro.props;
+const t = ui[locale];
+const year = new Date().getFullYear();
+---
+
+<Layout lang={locale} title={t.htmlTitle} description={t.description}>
+	<header class="container site-header">
+		<a class="brand" href={locale === 'pt' ? '/' : '/en/'}>{profile.name}</a>
+		<nav>
+			<a href="#sobre">{t.nav.about}</a>
+			<a href="#experiencia">{t.nav.experience}</a>
+			<a href="#habilidades">{t.nav.skills}</a>
+			<a href="#contato">{t.nav.contact}</a>
+			<a class="lang" href={t.switchHref} hreflang={locale === 'pt' ? 'en' : 'pt-BR'} lang={locale === 'pt' ? 'en' : 'pt-BR'}>{t.switchLabel}</a>
+		</nav>
+	</header>
+
+	<main>
+		<section class="hero container" id="inicio">
+			<p class="muted eyebrow">{t.hero.intro}</p>
+			<h1>{profile.name}</h1>
+			<p class="headline">{profile.headline}</p>
+			<p class="lead">{t.hero.lead}</p>
+			<p class="muted small">{profile.location}</p>
+			<a class="cta" href="#contato">{t.hero.cta} →</a>
+		</section>
+
+		<section class="container" id="sobre">
+			<h2>{t.about.title}</h2>
+			{t.about.paragraphs.map((p) => <p>{p}</p>)}
+			<h3 class="sub">{t.about.educationTitle}</h3>
+			<ul class="plain">
+				{t.about.education.map((e) => (
+					<li>
+						<span>{e.title}</span>
+						<span class="muted">{e.period}</span>
+					</li>
+				))}
+			</ul>
+		</section>
+
+		<section class="container" id="experiencia">
+			<h2>{t.experience.title}</h2>
+			<ol class="timeline">
+				{experience.map((job) => (
+					<li>
+						<header>
+							<h3>{job.role} · <span class="company">{job.company}</span></h3>
+							<p class="muted small">
+								{job.period[locale]} · {job.location}
+							</p>
+						</header>
+						<p>{job.description[locale]}</p>
+						<ul class="tags" aria-label="Stack">
+							{job.stack.map((s) => <li>{s}</li>)}
+						</ul>
+					</li>
+				))}
+			</ol>
+		</section>
+
+		<section class="container" id="habilidades">
+			<h2>{t.skills.title}</h2>
+			{t.skills.groups.map((g) => (
+				<div class="skill-group">
+					<h3 class="sub">{g.label}</h3>
+					<ul class="tags">
+						{g.items.map((i) => <li>{i}</li>)}
+					</ul>
+				</div>
+			))}
+			<h3 class="sub">{t.skills.certificationsTitle}</h3>
+			<ul class="plain">
+				{t.skills.certifications.map((c) => <li>{c}</li>)}
+			</ul>
+			<h3 class="sub">{t.skills.languagesTitle}</h3>
+			<ul class="plain">
+				{t.skills.languages.map((l) => <li>{l}</li>)}
+			</ul>
+		</section>
+
+		<section class="container" id="contato">
+			<h2>{t.contact.title}</h2>
+			<p class="lead">{t.contact.lead}</p>
+			<ul class="links">
+				<li><span class="muted">{t.contact.labels.email}</span> <a href={`mailto:${profile.email}`}>{profile.email}</a></li>
+				<li><span class="muted">{t.contact.labels.linkedin}</span> <a href={profile.linkedin} target="_blank" rel="noopener noreferrer">linkedin.com/in/danilosoaresdasilva</a></li>
+				<li><span class="muted">{t.contact.labels.github}</span> <a href={profile.github} target="_blank" rel="noopener noreferrer">github.com/DaniloSoaresBR</a></li>
+			</ul>
+		</section>
+	</main>
+
+	<footer class="container footer muted small">
+		<p>© {year} {profile.name}. {t.footer}</p>
+	</footer>
+
+	<style>
+		.site-header {
+			display: flex;
+			flex-wrap: wrap;
+			justify-content: space-between;
+			align-items: center;
+			gap: 0.75rem 1.5rem;
+			padding-top: 1.5rem;
+			padding-bottom: 1rem;
+		}
+
+		.brand {
+			font-weight: 600;
+			color: var(--fg);
+			text-decoration: none;
+		}
+
+		nav {
+			display: flex;
+			flex-wrap: wrap;
+			gap: 1rem;
+			font-size: 0.95rem;
+		}
+
+		nav a {
+			color: var(--muted);
+			text-decoration: none;
+		}
+
+		nav a:hover {
+			color: var(--fg);
+		}
+
+		nav .lang {
+			color: var(--accent);
+		}
+
+		.hero {
+			padding-top: 5rem;
+			border-top: none;
+		}
+
+		.hero h1 {
+			font-size: clamp(2.25rem, 6vw, 3.25rem);
+			margin: 0.25rem 0 0.5rem;
+		}
+
+		.headline {
+			font-weight: 500;
+			margin: 0 0 1.25rem;
+		}
+
+		.lead {
+			font-size: 1.125rem;
+			max-width: 36rem;
+		}
+
+		.eyebrow {
+			text-transform: uppercase;
+			letter-spacing: 0.08em;
+			font-size: 0.8rem;
+			margin: 0;
+		}
+
+		.small {
+			font-size: 0.9rem;
+		}
+
+		.cta {
+			display: inline-block;
+			margin-top: 1.5rem;
+			font-weight: 600;
+			text-decoration: none;
+			border-bottom: 2px solid var(--accent);
+		}
+
+		.sub {
+			font-size: 1rem;
+			margin: 2rem 0 0.75rem;
+		}
+
+		.plain {
+			list-style: none;
+			padding: 0;
+			margin: 0;
+		}
+
+		.plain li {
+			display: flex;
+			flex-wrap: wrap;
+			justify-content: space-between;
+			gap: 0.25rem 1rem;
+			padding: 0.5rem 0;
+			border-bottom: 1px solid var(--border);
+		}
+
+		.timeline {
+			list-style: none;
+			padding: 0;
+			margin: 0;
+		}
+
+		.timeline li {
+			padding: 1.5rem 0;
+			border-bottom: 1px solid var(--border);
+		}
+
+		.timeline li:first-child {
+			padding-top: 0;
+		}
+
+		.timeline h3 {
+			font-size: 1.05rem;
+			margin: 0;
+		}
+
+		.timeline header p {
+			margin: 0.25rem 0 0.75rem;
+		}
+
+		.timeline p {
+			margin: 0 0 0.75rem;
+		}
+
+		.company {
+			color: var(--muted);
+			font-weight: 400;
+		}
+
+		.tags {
+			list-style: none;
+			display: flex;
+			flex-wrap: wrap;
+			gap: 0.4rem;
+			padding: 0;
+			margin: 0;
+		}
+
+		.tags li {
+			font-size: 0.85rem;
+			padding: 0.2rem 0.6rem;
+			border: 1px solid var(--border);
+			border-radius: 999px;
+		}
+
+		.skill-group {
+			margin-bottom: 1rem;
+		}
+
+		.skill-group .sub {
+			margin-top: 1rem;
+		}
+
+		.links {
+			list-style: none;
+			padding: 0;
+			margin: 0;
+			display: grid;
+			gap: 0.75rem;
+		}
+
+		.footer {
+			padding: 2rem 1.25rem 3rem;
+			border-top: 1px solid var(--border);
+		}
+
+		.footer p {
+			margin: 0;
+		}
+	</style>
+</Layout>
