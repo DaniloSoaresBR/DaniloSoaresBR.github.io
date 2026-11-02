@@ -75,7 +75,7 @@ export const ui: Record<Locale, {
 		},
 		footer: 'Feito com Astro.',
 		switchLabel: 'English',
-		switchHref: '/en/',
+		switchHref: '/',
 		otherLang: 'Ver em inglês',
 	},
 	en: {
@@ -128,7 +128,7 @@ export const ui: Record<Locale, {
 		},
 		footer: 'Built with Astro.',
 		switchLabel: 'Português',
-		switchHref: '/',
+		switchHref: '/pt/',
 		otherLang: 'View in Portuguese',
 	},
 };
